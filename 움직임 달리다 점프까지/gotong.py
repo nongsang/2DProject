@@ -46,18 +46,26 @@ class Rockman:
                 elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP,):
                     self.state = self.LEFT_JUMP
             elif event.key == SDLK_x:
-                if self.state in (self.RIGHT_STAND,):
+                if self.state in (self.RIGHT_STAND,):       #오른쪽 서기일 때
                     self.state = self.RIGHT_STAND_SHOT
-                elif self.state in (self.RIGHT_RUN,):
-                    self.state = self.RIGHT_RUN_SHOT
-                elif self.state in (self.LEFT_STAND,):
+                elif self.state in (self.LEFT_STAND,):      #왼쪽 서기일 때
                     self.state = self.LEFT_STAND_SHOT
-                elif self.state in (self.LEFT_RUN,):
+                elif self.state in (self.RIGHT_RUN,):       #오른쪽 뛰기일 때
+                    self.state = self.RIGHT_RUN_SHOT
+                elif self.state in (self.LEFT_RUN,):        #왼쪽 뛰기일 때
                     self.state = self.LEFT_RUN_SHOT
+                elif self.state in (self.RIGHT_JUMP,):
+                    self.state = self.RIGHT_JUMP_SHOT
+                elif self.state in (self.LEFT_JUMP,):
+                    self.state = self.LEFT_JUMP_SHOT
             elif event.key == SDLK_z:
                 if self.state in (self.RIGHT_STAND,):
                     self.state = self.RIGHT_JUMP
                 elif self.state in (self.LEFT_STAND,):
+                    self.state = self.LEFT_JUMP
+                elif self.state in (self.RIGHT_RUN,):
+                    self.state = self.RIGHT_JUMP
+                elif self.state in (self.LEFT_RUN,):
                     self.state = self.LEFT_JUMP
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
@@ -79,11 +87,19 @@ class Rockman:
                     self.state = self.RIGHT_RUN
                 elif self.state in (self.LEFT_RUN_SHOT,):
                     self.state = self.LEFT_RUN
+                elif self.state in (self.RIGHT_JUMP_SHOT,):
+                    self.state = self.RIGHT_JUMP
+                elif self.state in (self.LEFT_JUMP_SHOT,):
+                    self.state = self.LEFT_JUMP
             elif event.key == SDLK_z:
                 if self.state in (self.RIGHT_JUMP,):
                     self.state = self.RIGHT_STAND
                 elif self.state in (self.LEFT_JUMP,):
                     self.state = self.LEFT_STAND
+                elif self.state in (self.RIGHT_JUMP,):
+                    self.state = self.RIGHT_JUMP
+                elif self.state in (self.LEFT_JUMP,):
+                    self.state = self.LEFT_RUN
 
 
     def update(self):
