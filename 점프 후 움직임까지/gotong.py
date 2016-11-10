@@ -19,9 +19,9 @@ class Rockman:
 
     image = None
 
-    RIGHT_STAND, LEFT_STAND, RIGHT_RUN, LEFT_RUN= 0, 1, 2, 3
-    RIGHT_RUN_SHOT, LEFT_RUN_SHOT, RIGHT_STAND_SHOT, LEFT_STAND_SHOT = 4, 5, 6, 7
-    RIGHT_JUMP, LEFT_JUMP, RIGHT_JUMP_SHOT, LEFT_JUMP_SHOT = 8, 9, 10, 11
+    RIGHT_STAND, LEFT_STAND, RIGHT_RUN, LEFT_RUN, RIGHT_RUN_SHOT, LEFT_RUN_SHOT = 0, 1, 2, 3, 4, 5
+    RIGHT_STAND_SHOT, LEFT_STAND_SHOT, RIGHT_JUMP, LEFT_JUMP, RIGHT_JUMP_SHOT, LEFT_JUMP_SHOT = 6, 7, 8, 9, 10, 11
+    RIGHT_JUMP_RIGHT, LEFT_JUMP_LEFT, RIGHT_JUMP_SHOT_RIGHT, LEFT_JUMP_SHOT_LEFT = 12, 13, 14, 15
 
     def __init__(self):
         self.x, self.y = 0, 90
@@ -37,15 +37,19 @@ class Rockman:
                     self.state = self.RIGHT_RUN
                 elif self.state in (self.RIGHT_STAND_SHOT, self.LEFT_STAND_SHOT, self.LEFT_RUN_SHOT,):
                     self.state = self.RIGHT_RUN_SHOT
-                elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP,):
+                elif self.state in (self.LEFT_JUMP,):
                     self.state = self.RIGHT_JUMP
+                elif self.state in (self.RIGHT_JUMP,):
+                    self.state = self.RIGHT_JUMP_RIGHT
             elif event.key == SDLK_LEFT:
                 if self.state in (self.RIGHT_STAND, self.LEFT_STAND, self.RIGHT_RUN,):
                     self.state = self.LEFT_RUN
                 elif self.state in (self.RIGHT_STAND_SHOT, self.LEFT_STAND_SHOT, self.RIGHT_RUN_SHOT,):
                     self.state = self.LEFT_RUN_SHOT
-                elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP,):
+                elif self.state in (self.RIGHT_JUMP,):
                     self.state = self.LEFT_JUMP
+                elif self.state in (self.LEFT_JUMP,):
+                    self.state = self.LEFT_JUMP_LEFT
             elif event.key == SDLK_x:
                 if self.state in (self.RIGHT_STAND,):       #오른쪽 서기일 때
                     self.state = self.RIGHT_STAND_SHOT
@@ -65,20 +69,24 @@ class Rockman:
                 elif self.state in (self.LEFT_STAND,):
                     self.state = self.LEFT_JUMP
                 elif self.state in (self.RIGHT_RUN,):
-                    self.state = self.RIGHT_JUMP
+                    self.state = self.RIGHT_JUMP_RIGHT
                 elif self.state in (self.LEFT_RUN,):
-                    self.state = self.LEFT_JUMP
+                    self.state = self.LEFT_JUMP_LEFT
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
                 if self.state in (self.RIGHT_RUN,):
                     self.state = self.RIGHT_STAND
                 elif self.state in (self.RIGHT_RUN_SHOT,):
                     self.state = self.RIGHT_STAND_SHOT
+                elif self.state in (self.RIGHT_JUMP_RIGHT,):
+                    self.state = self.RIGHT_JUMP
             elif event.key == SDLK_LEFT:
                 if self.state in (self.LEFT_RUN,):
                     self.state = self.LEFT_STAND
                 elif self.state in (self.LEFT_RUN_SHOT,):
                     self.state = self.LEFT_STAND_SHOT
+                elif self.state in (self.LEFT_JUMP_LEFT,):
+                    self.state = self.LEFT_JUMP
             elif event.key == SDLK_x:
                 if self.state in (self.RIGHT_STAND_SHOT,):
                     self.state = self.RIGHT_STAND
@@ -98,16 +106,20 @@ class Rockman:
                 elif self.state in (self.LEFT_JUMP,):
                     self.state = self.LEFT_STAND
                 elif self.state in (self.RIGHT_JUMP,):
-                    self.state = self.RIGHT_JUMP
+                    self.state = self.RIGHT_RUN
                 elif self.state in (self.LEFT_JUMP,):
                     self.state = self.LEFT_RUN
 
 
-    def update(self, event):
+    def update(self):
         self.frame = (self.frame + 1) % 4
         if self.state in (self.RIGHT_RUN, self.RIGHT_RUN_SHOT,):
             self.x = min(800, self.x + 5)
         elif self.state in (self.LEFT_RUN, self.LEFT_RUN_SHOT,):
+            self.x = max(0, self.x - 5)
+        elif self.state in (self.RIGHT_JUMP_RIGHT,):
+            self.x = min(800, self.x + 5)
+        elif self.state in (self.LEFT_JUMP_LEFT,):
             self.x = max(0, self.x - 5)
 
     def draw(self):
