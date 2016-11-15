@@ -16,15 +16,6 @@ class Grass:
         self.image.draw(400, 30)
 
 class Rockman:
-    PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-    RUN_SPEED_KMPH = 20.0  # Km / Hour
-    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-
-    TIME_PER_ACTION = 2.0
-    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-    FRAMES_PER_ACTION = 8
 
     image = None
 
@@ -36,9 +27,7 @@ class Rockman:
     def __init__(self):
         self.x, self.y = 0, 90
         self.frame = random.randint(0, 3)
-        self.total_frames = 0.0
-        self.dir = 0
-        self.state = self.RIGHT_STAND
+        self.state = 0
         if self.image == None:
             self.image = load_image('Rockman.png')
 
@@ -47,35 +36,25 @@ class Rockman:
             if event.key == SDLK_RIGHT:                                                                         # 키 다운이고 오른쪽 화살표
                 if self.state in (self.RIGHT_STAND, self.LEFT_STAND, self.LEFT_RUN,):
                     self.state = self.RIGHT_RUN
-                    self.dir = 1
                 elif self.state in (self.RIGHT_STAND_SHOT, self.LEFT_STAND_SHOT, self.LEFT_RUN_SHOT,):
                     self.state = self.RIGHT_RUN_SHOT
-                    self.dir = 1
                 elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP, self.LEFT_JUMP_LEFT):
                     self.state = self.RIGHT_JUMP_RIGHT
-                    self.dir = 1
                 elif self.state in (self.LEFT_JUMP_SHOT,):
                     self.state = self.RIGHT_JUMP_SHOT
-                    self.dir = 0
                 elif self.state in (self.RIGHT_JUMP_SHOT, self.LEFT_JUMP_SHOT, self.LEFT_JUMP_SHOT_LEFT):
                     self.state = self.RIGHT_JUMP_SHOT_RIGHT
-                    self.dir = 1
             elif event.key == SDLK_LEFT:                                                                        # 키 다운이고 왼쪽 화살표
                 if self.state in (self.RIGHT_STAND, self.LEFT_STAND, self.RIGHT_RUN,):
                     self.state = self.LEFT_RUN
-                    self.dir = -1
                 elif self.state in (self.RIGHT_STAND_SHOT, self.LEFT_STAND_SHOT, self.RIGHT_RUN_SHOT,):
                     self.state = self.LEFT_RUN_SHOT
-                    self.dir = -1
                 elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP, self.RIGHT_JUMP_RIGHT):
                     self.state = self.LEFT_JUMP_LEFT
-                    self.dir = -1
                 elif self.state in (self.RIGHT_JUMP_SHOT,):
                     self.state = self.LEFT_JUMP_SHOT
-                    self.dir = 0
                 elif self.state in (self.RIGHT_JUMP_SHOT, self.LEFT_JUMP_SHOT, self.RIGHT_JUMP_SHOT_RIGHT):
                     self.state = self.LEFT_JUMP_SHOT_LEFT
-                    self.dir = -1
             elif event.key == SDLK_x:                                                                           # 키 다운이고 x키
                 if self.state in (self.RIGHT_STAND,):
                     self.state = self.RIGHT_STAND_SHOT
@@ -104,33 +83,27 @@ class Rockman:
                     self.state = self.LEFT_JUMP_LEFT
                 elif self.state in (self.LEFT_JUMP_SHOT,):
                     self.state = self.LEFT_JUMP_SHOT_LEFT
+                elif self.state in (self.RIGHT_JUMP_SHOT,):
+                    self.state = self.RIGHT_JUMP_SHOT_RIGHT
         elif event.type == SDL_KEYUP:                                                                           # 키 업일 때
             if event.key == SDLK_RIGHT:                                                                         # 키 업이고 오른쪽 화살표
                 if self.state in (self.RIGHT_RUN,):
                     self.state = self.RIGHT_STAND
-                    self.dir = 0
                 elif self.state in (self.RIGHT_RUN_SHOT,):
                     self.state = self.RIGHT_STAND_SHOT
-                    self.dir = 0
                 elif self.state in (self.RIGHT_JUMP_RIGHT,):
                     self.state = self.RIGHT_JUMP
-                    self.dir = 0
                 elif self.state in (self.RIGHT_JUMP_SHOT_RIGHT,):
                     self.state = self.RIGHT_JUMP_SHOT
-                    self.dir = 0
             elif event.key == SDLK_LEFT:                                                                        # 키 업이고 왼쪽 화살표
                 if self.state in (self.LEFT_RUN,):
                     self.state = self.LEFT_STAND
-                    self.dir = 0
                 elif self.state in (self.LEFT_RUN_SHOT,):
                     self.state = self.LEFT_STAND_SHOT
-                    self.dir = 0
                 elif self.state in (self.LEFT_JUMP_LEFT,):
                     self.state = self.LEFT_JUMP
-                    self.dir = 0
                 elif self.state in (self.LEFT_JUMP_SHOT_LEFT,):
                     self.state = self.LEFT_JUMP_SHOT
-                    self.dir = 0
             elif event.key == SDLK_x:                                                                           # 키 업이고 x키
                 if self.state in (self.RIGHT_STAND_SHOT,):
                     self.state = self.RIGHT_STAND
@@ -163,14 +136,19 @@ class Rockman:
                     self.state = self.LEFT_JUMP
 
 
-    def update(self, frame_time):
-        distance = Rockman.RUN_SPEED_PPS * frame_time
-        self.total_frames += rockman.FRAMES_PER_ACTION * rockman.ACTION_PER_TIME * frame_time
-        self.frame = int(self.total_frames) % 4
-        self.x += (self.dir * distance)
 
-
-
+    def update(self):
+        self.frame = (self.frame + 1) % 4
+        if self.state in (self.RIGHT_RUN, self.RIGHT_RUN_SHOT,):
+            self.x = min(800, self.x + 5)
+        elif self.state in (self.LEFT_RUN, self.LEFT_RUN_SHOT,):
+            self.x = max(0, self.x - 5)
+        elif self.state in (self.RIGHT_JUMP_RIGHT, self.RIGHT_JUMP_SHOT_RIGHT,):
+            self.x = min(800, self.x + 5)
+        elif self.state in (self.LEFT_JUMP_LEFT, self.LEFT_JUMP_SHOT_LEFT,):
+            self.x = max(0, self.x - 5)
+        elif self.state in (self.RIGHT_JUMP, self.LEFT_JUMP, self.RIGHT_JUMP_SHOT, self.LEFT_JUMP_SHOT, self.RIGHT_JUMP_SHOT_RIGHT, self.LEFT_JUMP_SHOT_LEFT):
+            self.y += 5
 
     def draw(self):
         self.image.clip_draw(self.frame*32, self.state * 30, 32, 30, self.x, self.y)
@@ -178,7 +156,7 @@ class Rockman:
 
 
 
-def handle_events(frame_time):
+def handle_events():
 
     global running
     global rockman
@@ -192,17 +170,6 @@ def handle_events(frame_time):
         else:
             rockman.handle_events(event)
 
-current_time = 0.0
-
-
-def get_frame_time():
-
-    global current_time
-
-    frame_time = get_time() - current_time
-    current_time += frame_time
-    return frame_time
-
 def main():
 
     open_canvas()
@@ -214,17 +181,17 @@ def main():
     grass = Grass()
 
     running = True
-    current_time = get_time()
-
     while running:
-        frame_time = get_frame_time()
-        handle_events(frame_time)
-        rockman.update(frame_time)
+        handle_events()
+
+        rockman.update()
 
         clear_canvas()
         grass.draw()
         rockman.draw()
         update_canvas()
+
+        delay(0.01)
 
     close_canvas()
 
