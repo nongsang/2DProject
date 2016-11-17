@@ -10,10 +10,10 @@ class Buster:
 
 class Grass:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('map.png')
 
     def draw(self):
-        self.image.draw(400, 30)
+        self.image.draw(400, 300)
 
 class Rockman:
     PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -30,11 +30,10 @@ class Rockman:
 
     RIGHT_STAND, LEFT_STAND, RIGHT_RUN, LEFT_RUN, RIGHT_RUN_SHOT, LEFT_RUN_SHOT = 0, 1, 2, 3, 4, 5
     RIGHT_STAND_SHOT, LEFT_STAND_SHOT, RIGHT_JUMP, LEFT_JUMP, RIGHT_JUMP_SHOT, LEFT_JUMP_SHOT = 6, 7, 8, 9, 10, 11
-    RIGHT_JUMP_RIGHT, LEFT_JUMP_LEFT, RIGHT_JUMP_SHOT_RIGHT, LEFT_JUMP_SHOT_LEFT = 12, 13, 14, 15
-    RIGHT_DEAD, LEFT_DEAD = 16, 17
+    RIGHT_JUMP_RIGHT, LEFT_JUMP_LEFT, RIGHT_JUMP_SHOT_RIGHT, LEFT_JUMP_SHOT_LEFT, DEAD = 12, 13, 14, 15, 16
 
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = 40, 36
         self.frame = random.randint(0, 3)
         self.total_frames = 0.0
         self.dir = 0
@@ -104,6 +103,10 @@ class Rockman:
                     self.state = self.LEFT_JUMP_LEFT
                 elif self.state in (self.LEFT_JUMP_SHOT,):
                     self.state = self.LEFT_JUMP_SHOT_LEFT
+                elif self.state in (self.RIGHT_STAND_SHOT,):
+                    self.state = self.RIGHT_JUMP_SHOT
+                elif self.state in (self.LEFT_STAND_SHOT,):
+                    self.state = self.LEFT_JUMP_SHOT
         elif event.type == SDL_KEYUP:                                                                           # 키 업일 때
             if event.key == SDLK_RIGHT:                                                                         # 키 업이고 오른쪽 화살표
                 if self.state in (self.RIGHT_RUN,):
@@ -161,13 +164,22 @@ class Rockman:
                     self.state = self.RIGHT_JUMP
                 elif self.state in (self.LEFT_JUMP_LEFT,):
                     self.state = self.LEFT_JUMP
+                elif self.state in (self.RIGHT_JUMP_SHOT,):
+                    self.state = self.RIGHT_STAND_SHOT
+                elif self.state in (self.LEFT_JUMP_SHOT,):
+                    self.state = self.LEFT_STAND_SHOT
 
 
     def update(self, frame_time):
+        def clamp(minimum, x, maximum):
+            return max(minimum, min(x, maximum))
+
         distance = Rockman.RUN_SPEED_PPS * frame_time
         self.total_frames += rockman.FRAMES_PER_ACTION * rockman.ACTION_PER_TIME * frame_time
         self.frame = int(self.total_frames) % 4
         self.x += (self.dir * distance)
+
+        self.x = clamp(40, self.x, 662)
 
 
 
