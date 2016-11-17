@@ -170,6 +170,7 @@ class Rockman:
                     self.state = self.LEFT_STAND_SHOT
 
 
+
     def update(self, frame_time):
         def clamp(minimum, x, maximum):
             return max(minimum, min(x, maximum))
