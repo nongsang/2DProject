@@ -107,10 +107,13 @@ class Rockman:
                     self.state = self.RIGHT_JUMP_SHOT
                 elif self.state in (self.LEFT_STAND_SHOT,):
                     self.state = self.LEFT_JUMP_SHOT
+<<<<<<< HEAD
                 elif self.state in (self.RIGHT_RUN_SHOT,):
                     self.state = self.RIGHT_JUMP_SHOT_RIGHT
                 elif self.state in (self.LEFT_RUN_SHOT,):
                     self.state = self.LEFT_JUMP_SHOT_LEFT
+=======
+>>>>>>> origin/master
         elif event.type == SDL_KEYUP:                                                                           # 키 업일 때
             if event.key == SDLK_RIGHT:                                                                         # 키 업이고 오른쪽 화살표
                 if self.state in (self.RIGHT_RUN,):
@@ -172,10 +175,13 @@ class Rockman:
                     self.state = self.RIGHT_STAND_SHOT
                 elif self.state in (self.LEFT_JUMP_SHOT,):
                     self.state = self.LEFT_STAND_SHOT
+<<<<<<< HEAD
                 elif self.state in (self.RIGHT_JUMP_SHOT_RIGHT,):
                     self.state = self.RIGHT_RUN_SHOT
                 elif self.state in (self.LEFT_JUMP_SHOT_LEFT,):
                     self.state = self.LEFT_RUN_SHOT
+=======
+>>>>>>> origin/master
 
 
 
