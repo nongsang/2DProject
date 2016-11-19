@@ -1,23 +1,6 @@
 import random
 from pico2d import *
 
-running = None
-Rockman = None
-
-class Buster:
-    def __init__(self):
-        self.image = load_image('Buster.png')
-
-    def draw(self):
-        pass
-
-class Grass:
-    def __init__(self):
-        self.image = load_image('map.png')
-
-    def draw(self):
-        self.image.draw(400, 300)
-
 class Rockman:
     PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
     RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -198,60 +181,3 @@ class Rockman:
 
     def draw(self):
         self.image.clip_draw(self.frame*32, self.state * 30, 32, 30, self.x, self.y)
-
-
-
-
-def handle_events(frame_time):
-
-    global running
-    global rockman
-    events = get_events()
-
-    for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            running = False
-        else:
-            rockman.handle_events(event)
-
-current_time = 0.0
-
-
-def get_frame_time():
-
-    global current_time
-
-    frame_time = get_time() - current_time
-    current_time += frame_time
-    return frame_time
-
-def main():
-
-    open_canvas()
-
-    global rockman
-    global running
-
-    rockman = Rockman()
-    grass = Grass()
-
-    running = True
-    current_time = get_time()
-
-    while running:
-        frame_time = get_frame_time()
-        handle_events(frame_time)
-        rockman.update(frame_time)
-
-        clear_canvas()
-        grass.draw()
-        rockman.draw()
-        update_canvas()
-
-    close_canvas()
-
-
-if __name__ == '__main__':
-    main()
