@@ -6,9 +6,13 @@ Rockman = None
 
 class Buster:
     def __init__(self):
+        global rockman
         self.image = load_image('Buster.png')
 
     def draw(self):
+        self.image.draw(rockman.x, rockman.y)
+
+    def update(self):
         pass
 
 class Grass:
@@ -236,6 +240,7 @@ def main():
 
     rockman = Rockman()
     grass = Grass()
+    buster = Buster()
 
     running = True
     current_time = get_time()
@@ -248,6 +253,7 @@ def main():
         clear_canvas()
         grass.draw()
         rockman.draw()
+        buster.draw()
         update_canvas()
 
     close_canvas()
