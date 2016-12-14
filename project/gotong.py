@@ -254,7 +254,7 @@ def main():
         clear_canvas()
         grass.draw()
         rockman.draw()
-        buster.draw()
+        #buster.draw()
         update_canvas()
 
     close_canvas()
