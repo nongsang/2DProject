@@ -10,7 +10,7 @@ class Buster:
         self.image = load_image('Buster.png')
 
     def draw(self):
-        #self.image.draw(rockman.x, rockman.y)
+        self.image.draw(rockman.x, rockman.y)
         pass
 
     def update(self):
