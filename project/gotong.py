@@ -7,7 +7,7 @@ Rockman = None
 class Buster:
     def __init__(self):
         global rockman
-        self.image = load_image('Buster.png')
+        #self.image = load_image('Buster.png')
 
     def draw(self):
         self.image.draw(rockman.x, rockman.y)
