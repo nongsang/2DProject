@@ -4,18 +4,6 @@ from pico2d import *
 running = None
 Rockman = None
 
-class Buster:
-    def __init__(self):
-        global rockman
-        self.image = load_image('Buster.png')
-
-    def draw(self):
-        self.image.draw(rockman.x, rockman.y)
-        pass
-
-    def update(self):
-        pass
-
 class Grass:
     def __init__(self):
         self.image = load_image('map.png')
