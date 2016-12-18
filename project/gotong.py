@@ -4,8 +4,6 @@ from pico2d import *
 running = None
 Rockman = None
 
-<<<<<<< HEAD
-=======
 class Buster:
     def __init__(self):
         global rockman
@@ -18,7 +16,6 @@ class Buster:
     def update(self):
         pass
 
->>>>>>> origin/master
 class Grass:
     def __init__(self):
         self.image = load_image('map.png')
@@ -257,7 +254,6 @@ def main():
         clear_canvas()
         grass.draw()
         rockman.draw()
-        #buster.draw()
         update_canvas()
 
     close_canvas()
