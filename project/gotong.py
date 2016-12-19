@@ -4,19 +4,7 @@ from pico2d import *
 running = None
 Rockman = None
 
-class Buster:
-    def __init__(self):
-        global rockman
-        #self.image = load_image('Buster.png')
-
-    def draw(self):
-        self.image.draw(rockman.x, rockman.y)
-        pass
-
-    def update(self):
-        pass
-
-class Grass:
+class Map:
     def __init__(self):
         self.image = load_image('map.png')
 
@@ -26,6 +14,7 @@ class Grass:
 class Rockman:
     PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
     RUN_SPEED_KMPH = 20.0  # Km / Hour
+
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -240,8 +229,7 @@ def main():
     global running
 
     rockman = Rockman()
-    grass = Grass()
-    buster = Buster()
+    map = Map()
 
     running = True
     current_time = get_time()
@@ -252,7 +240,7 @@ def main():
         rockman.update(frame_time)
 
         clear_canvas()
-        grass.draw()
+        map.draw()
         rockman.draw()
         update_canvas()
 
